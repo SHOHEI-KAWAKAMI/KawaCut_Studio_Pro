@@ -28,9 +28,37 @@
  <!-- ページ全体の背景色はこの body の style="background-color: #D0B0FF;" で設定します。 -->
   <body class="min-h-full" style="background-color: #D0B0FF;">
   <div class="container mx-auto px-4 py-8 max-w-6xl">
-   <div class="text-center mb-8">
-    <h1 class="text-4xl font-bold text-gray-800 mb-2">KAWACut Studio Pro  ver.1.0</h1>
-    <p class="text-gray-600">部品表と材料サイズから効率的な木取図を自動生成</p>
+   <!-- ヘッダー：タイトルを左寄せ、右側に外部サイトと説明動画の導線を配置 -->
+   <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div class="text-left">
+     <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">KAWACut Studio Pro ver.1.1</h1>
+     <p class="text-gray-600">部品表と材料サイズから効率的な木取図を自動生成</p>
+    </div>
+    <nav class="flex flex-wrap items-center gap-3 md:justify-end">
+    
+     <a href="https://shohei-kawakami.github.io/kawacut-studio/" target="_blank" rel="noopener noreferrer"
+        class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded-lg shadow transition-colors">通常版へ移動 ↗</a>
+     <button type="button" onclick="openHelpVideo()"
+        class="inline-flex items-center justify-center bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-5 rounded-lg shadow transition-colors">▶ 使い方動画</button>
+    </nav>
+   </header>
+   <div id="helpVideoModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4"
+        role="dialog" aria-modal="true" aria-labelledby="helpVideoTitle" onclick="if(event.target===this) closeHelpVideo()">
+    <div class="w-full max-w-4xl rounded-xl bg-white p-4 md:p-6 shadow-2xl">
+     <div class="flex items-center justify-between gap-4 mb-4">
+      <h2 id="helpVideoTitle" class="text-xl font-bold text-gray-800">KAWACut Studio Pro 操作説明</h2>
+      <button type="button" onclick="closeHelpVideo()" aria-label="動画を閉じる" class="rounded-lg px-3 py-2 text-gray-600 hover:bg-gray-100">✕ 閉じる</button>
+     </div>
+     <div class="aspect-video overflow-hidden rounded-lg bg-gray-100">
+      <!-- TODO: src を YouTube 埋め込みURLに変更してください -->
+      <iframe id="helpVideoFrame" class="h-full w-full" src="https://www.youtube-nocookie.com/embed/BHW78Y0pNBY?rel=0" title="KAWACut Studio 操作説明動画" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+     </div>
+     <div class="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <p class="text-sm text-gray-500">埋め込み再生できない場合は、YouTubeで直接ご覧ください。</p>
+      <a href="https://youtu.be/BHW78Y0pNBY" target="_blank" rel="noopener noreferrer"
+         class="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700">YouTubeで直接見る ↗</a>
+     </div>
+    </div>
    </div>
    
 <section class="bg-white rounded-xl shadow-lg p-6 mb-8">
@@ -132,7 +160,23 @@
    </div>
   </div>
   <script>
-        let parts = [];
+        function openHelpVideo() {
+             const modal = document.getElementById('helpVideoModal');
+             modal.classList.remove('hidden');
+             modal.classList.add('flex');
+             document.body.style.overflow = 'hidden';
+         }
+         function closeHelpVideo() {
+             const modal = document.getElementById('helpVideoModal');
+             modal.classList.add('hidden');
+             modal.classList.remove('flex');
+             document.body.style.overflow = '';
+         }
+         document.addEventListener('keydown', function(event) {
+             if (event.key === 'Escape') closeHelpVideo();
+         });
+
+         let parts = [];
         let partIdCounter = 1;
         let currentColors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F', '#FF8A80', '#80CBC4', '#81C784', '#FFB74D', '#F48FB1', '#CE93D8', '#90CAF9', '#A5D6A7'];
         let partTypeColors = {};
